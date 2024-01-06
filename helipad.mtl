@@ -1,0 +1,58 @@
+# Blender 4.0.2 MTL File: 'untitled.blend'
+# www.blender.org
+
+newmtl Material
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+Pr 0.500000
+Pm 0.000000
+Ps 0.000000
+Pc 0.000000
+Pcr 0.030000
+aniso 0.000000
+anisor 0.000000
+map_Kd C:/Users/Szymon/Downloads/helpad5_001.png
+
+newmtl Material.004
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+Pr 0.500000
+Pm 0.000000
+Ps 0.000000
+Pc 0.000000
+Pcr 0.030000
+aniso 0.000000
+anisor 0.000000
+map_Kd C:/Users/Szymon/Downloads/dirty-metal-texture.jpg
+
+newmtl Material.005
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+Pr 0.400000
+Pm 0.000000
+map_Kd C:/Users/Szymon/Downloads/r54fdba3gs424rk5b1j48pf46f-fee00ffcc9cdebe86f0efb70814fa8ca.png
+
+newmtl Material.007
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+Pr 0.500000
+Pm 0.000000
+Ps 0.000000
+Pc 0.000000
+Pcr 0.030000
+aniso 0.000000
+anisor 0.000000
+map_Kd C:/Users/Szymon/Downloads/metal-texture-background-yyz4p6nroq1vjqw4.jpg
