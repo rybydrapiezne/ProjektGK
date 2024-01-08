@@ -13,7 +13,11 @@ from pygame import *
 
 viewer = [0.0, 0.0, 10.0]
 viewport = (1920, 1080)
-
+tempy = 0
+flag_render = False
+currx = 0
+curry = 0
+currz = 0
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 textureSurface = pygame.image.load(os.path.join(__location__, 'wall.jpg')), pygame.image.load(
@@ -122,14 +126,34 @@ def axes():
     glEnd()
 
 
-def helipad(set_x, set_y, set_z,helipad_model):
-    glColor3f(1.0,1.0,1.0)
+def lamp(set_x, set_y, set_z, lamp_model, side):
+    glColor3f(1.0, 1.0, 1.0)
+    glTranslate(0 + set_x, 0 + set_y, 0 + set_z)
+    if side == 0:
+        glRotate(-90, 0, 0, 1)
+    else:
+        glRotate(90, 0, 0, 1)
+    # glScalef(1, 1, 1)
+    # glRotate(rx, 0, 1, 0)
+    glCallList(lamp_model.gl_list)
+
+
+def helipad(set_x, set_y, set_z, helipad_model):
+    glColor3f(1.0, 1.0, 1.0)
     glTranslate(0, 0, 0)
-    glRotate(-90, 1,0, 0)
-    glScalef(0.1,0.1,0.1)
-    #glRotate(rx, 0, 1, 0)
+    glRotate(-90, 1, 0, 0)
+    glScalef(0.1, 0.1, 0.1)
+    # glRotate(rx, 0, 1, 0)
     glCallList(helipad_model.gl_list)
 
+
+def road(set_x, set_y, set_z, road_model):
+    glColor3f(1.0, 1.0, 1.0)
+    glTranslate(0 + set_x, 0 + set_y, 0 + set_z)
+    # glRotate(-90, 1, 0, 0)
+    glScalef(2.0, 2.0, 2.0)
+    # glRotate(rx, 0, 1, 0)
+    glCallList(road_model.gl_list)
 
 
 def field(set_x, set_y, set_z):
@@ -279,46 +303,105 @@ def building(set_x, set_y, set_z):
     glEnd()
 
 
+def building1(set_x, set_y, set_z, building1_model, side):
+    glColor3f(1.0, 1.0, 1.0)
+    glTranslate(0 + set_x, 0 + set_y, 0 + set_z)
+    if side == 0:
+        glRotate(-90, 1, 0, 0)
+    else:
+        glRotate(90, 1, 0, 0)
+        glRotate(180, 0, 1, 0)
+    glScalef(1.0, 1.0, 1.0)
+    # glRotate(rx, 0, 1, 0)
+    glCallList(building1_model.gl_list)
+
+
 def spin(angle):
     # glRotatef(angle, 1.0, 0.0, 0.0)
     glRotatef(angle, 0.0, 1.0, 0.0)
     # glRotatef(angle, 0.0, 0.0, 1.0)
 
-
-# def switch_view(x):
-#    gluLookAt(x, 8.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0)
-
-
-def render(time, x,helipad_model):
+def helicopter(set_x,set_y,set_z,heli_model):
+    glColor3f(1.0, 1.0, 1.0)
+    glTranslate(0 + set_x, 0 + set_y, 0 + set_z)
+    # glRotate(-90, 1, 0, 0)
+    glScalef(2.0, 2.0, 2.0)
+    # glRotate(rx, 0, 1, 0)
+    glCallList(heli_model.gl_list)
+def render(time, x, helipad_model, road_model, lamp_model, building1_model,heli_model):
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-    # glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    # glFrustum(-10,10,-10,10,100,-100)
-    # switch_view(x)
-
-    # (width, height) = canvas.GetClientSize()
-
-    # glPushMatrix()
-    # spin(time * 180 / 3.1415)'
-
-    glTranslate(0.0, -1.0, 0.0)
+    global flag_render
+    global tempy
+    global curry
+    global currx
+    global currz
+    glTranslate(0.0, -0.5, 1.5)
+    glRotatef(180, 0.0, 1.0, 0.0)
     glRotatef(10, 1.0, 0.0, 0.0)
-    glTranslate(0, -x, -x)
+    if curry > -7.0:
+        curry -= x
+        glTranslate(0, curry, 0)
+    else:
+        if not flag_render:
+            # tempy = -x
+            flag_render = True
+        currz -= x
+        glTranslate(0.0, curry, currz)
 
     # spin(time * 180 / 3.1415)
     # axes()
     generate_plachta()
     field(-4.0, 0.0, 0.0)
-    i = -20
+    i = -10
     j = 0
-    while i <= 20:
+    side = 0
+    while i <= 10:
         while j < 100:
-            building(i, 0, j)
-            j = j + 5
-        i = i + 40
+            glPushMatrix()
+            if i == -10:
+                building1(i, 0, j, building1_model, 0)
+            else:
+                building1(i, 0, j, building1_model, 1)
+            glPopMatrix()
+            j = j + 12
+        i = i + 20
         j = 0
     helipad(0, 0, 0, helipad_model)
-
+    y = 0
+    while y > -1000:
+        glPushMatrix()
+        road(50, y, 0.0, road_model)
+        glPopMatrix()
+        glPushMatrix()
+        road(-50, y, 0.0, road_model)
+        glPopMatrix()
+        # road(40,0,0,road_model)
+        y -= 37.5
+    y = 0
+    side = 0
+    while y > -1000:
+        glPushMatrix()
+        if side == 0:
+            lamp(70, y, 0, lamp_model, side)
+            side = 1
+        else:
+            lamp(31, y, 0, lamp_model, side)
+            side = 0
+        glPopMatrix()
+        y -= 20
+    y = 0
+    while y > -1000:
+        glPushMatrix()
+        if side == 0:
+            lamp(-70, y, 0, lamp_model, 1)
+            side = 1
+        else:
+            lamp(-31, y, 0, lamp_model, 0)
+            side = 0
+        glPopMatrix()
+        y -= 20
+    helicopter(0,currz,-curry,heli_model)
     # glTranslate(-10, 0, 5)
     # glPopMatrix()
     # building00.0, .0,0.0)
@@ -383,13 +466,17 @@ def main():
     load_texture(2, id3)
     glActiveTexture(GL_TEXTURE3)
     load_texture(3, id4)
-    helipad_model = OBJ( os.path.join(__location__, 'helipad.obj'), swapyz=True)
+    helipad_model = OBJ(os.path.join(__location__, 'helipad.obj'), swapyz=True)
+    road_model = OBJ(os.path.join(__location__, 'road.obj'), swapyz=True)
+    lamp_model = OBJ(os.path.join(__location__, 'lamp.obj'), swapyz=True)
+    building1_model = OBJ(os.path.join(__location__, 'building1.obj'), swapyz=True)
+    heli_model = OBJ(os.path.join(__location__, 'heli.obj'), swapyz=True)
 
     x = 0
     startup()
     while not glfwWindowShouldClose(window):
-        render(glfwGetTime(), x,helipad_model)
-        x += 0.01
+        render(glfwGetTime(), x, helipad_model, road_model, lamp_model, building1_model,heli_model)
+        x = 0.05
         glfwSwapBuffers(window)
         glfwPollEvents()
     shutdown()
