@@ -24,12 +24,12 @@ move_r = 0
 move_l = 0
 move_u = 0
 move_d = 0
-
+flag=False
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
-textureSurface = pygame.image.load(os.path.join(__location__, 'wall.jpg')), pygame.image.load(
-    os.path.join(__location__, 'side_wall.jpg')), pygame.image.load(os.path.join(__location__, 'football_field.jpg')), \
-                 pygame.image.load(os.path.join(__location__, 'fence.png'))
+textureSurface = pygame.image.load(os.path.join(__location__, 'textures\\wall.jpg')), pygame.image.load(
+    os.path.join(__location__, 'textures\\side_wall.jpg')), pygame.image.load(os.path.join(__location__, 'textures\\football_field.jpg')), \
+                 pygame.image.load(os.path.join(__location__, 'textures\\fence.png'))
 
 textureDat = (pygame.image.tostring(textureSurface[0], "RGBA"), pygame.image.tostring(textureSurface[1], "RGBA"),
               pygame.image.tostring(textureSurface[2], "RGBA"), pygame.image.tostring(textureSurface[3], "RGBA"))
@@ -143,9 +143,9 @@ def lamp(set_x, set_y, set_z, lamp_model, side):
 
 def helipad(set_x, set_y, set_z, helipad_model):
     glColor3f(1.0, 1.0, 1.0)
-    glTranslate(0, 0, 0)
+    glTranslate(0+set_x, 0+set_y, 0+set_z)
     glRotate(-90, 1, 0, 0)
-    glScalef(0.1, 0.1, 0.1)
+    glScalef(0.4, 0.4, 0.4)
     # glRotate(rx, 0, 1, 0)
     glCallList(helipad_model.gl_list)
 
@@ -292,19 +292,28 @@ def render(time, x, helipad_model, road_model, lamp_model, building1_model, heli
     global curry
     global currx
     global currz
+    global flag
     mouseMove = pygame.mouse.get_rel()
     glRotatef(180 + move_r, 0.0, 1.0, 0.0)
     glRotatef(move_u, 1.0, 0.0, 0.0)
     glTranslate(0.0, -3.5, -7.5)
-    if curry > -9.0:
+    if curry > -9.0 and flag==False:
         curry -= x
-        glTranslate(0, curry, 0)
-    else:
+        currz-=x
+        glTranslate(0, curry, currz)
+    elif currz>-50 and flag==False:
         if not flag_render:
             # tempy = -x
             flag_render = True
         currz -= x
         glTranslate(0.0, curry, currz)
+    elif curry<1:
+        flag=True
+        currz-=x
+        curry+=x
+        glTranslate(0.0,curry,currz)
+    else:
+        glTranslate(0.0,curry,currz)
 
     glPushMatrix()
     field(30.0, 0.0, 40.0)
@@ -328,6 +337,9 @@ def render(time, x, helipad_model, road_model, lamp_model, building1_model, heli
 
     glPushMatrix()
     helipad(0, 0, 0, helipad_model)
+    glPopMatrix()
+    glPushMatrix()
+    helipad(0, 0, 68, helipad_model)
     glPopMatrix()
     glPushMatrix()
     skyscraper(-30, 0, 90, building2_model)
@@ -425,6 +437,7 @@ def render(time, x, helipad_model, road_model, lamp_model, building1_model, heli
     glPushMatrix()
     set_skybox(0.0, 0.0, 0.0, skybox)
     glPopMatrix()
+
     glFlush()
 
 
