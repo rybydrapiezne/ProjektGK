@@ -1,0 +1,22 @@
+# Blender 4.0.2 MTL File: 'building2.blend'
+# www.blender.org
+
+newmtl Material
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures\1000_F_309037022_yrSvYX15Gl7gSaS3Rdw0n0ih8GFTJ128.jpg
+
+newmtl Material.001
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures\black-metal-plate-texture-stainless-steel-background-with-black-gradient-and-diagonal-lines-modern-illustration-vector.jpg
